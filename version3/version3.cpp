@@ -12,7 +12,7 @@
 using namespace std;
 
 void runVersion3(int op) {
-    int iterations[] = {24, 32, 2, 4, 3, 3, 3, 3, 3, 3, 23, 22, 8, 20, 13, 15, 4, 2, 7, 5};
+    int iterations[] = {24, 32, 2, 4, 3, 3, 3, 3, 3, 3, 540, 6, 3, 3, 3, 3, 3, 3, 3, 3};
 
     double *durations, avg;
     int n = 0, x = 15;
@@ -33,12 +33,12 @@ void runVersion3(int op) {
                 cout << "For sequential ikj n = " << n << " , average time = " << avg << " ms" << endl;
                 break;
             case 2:
-                durations = new double[iterations[i+10]];
+                durations = new double[iterations[i + 10]];
 
-                for (int j = 0; j < iterations[i+10]; ++j)
+                for (int j = 0; j < iterations[i + 10]; ++j)
                     durations[j] = getTimeForIKJParallel(n);
 
-                avg = average(durations, iterations[i+10]);
+                avg = average(durations, iterations[i + 10]);
                 cout << "For parallel ikj n = " << n << " , average time = " << avg << " ms" << endl;
                 break;
             case 3:

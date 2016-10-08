@@ -11,7 +11,7 @@
 using namespace std;
 
 void runVersion1() {
-    int iterations[] = {3, 110, 150, 147, 4, 5, 14, 17, 4, 1};
+    int iterations[] = {218, 7, 3, 3, 3, 3, 3, 3, 3, 3};
     double *durations, avg;
     int n = 0;
 

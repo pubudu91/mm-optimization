@@ -9,6 +9,7 @@
 #include "MatrixOps.h"
 #include "../version1/version1.h"
 #include "../version2/version2.h"
+#include "../version3/version3.h"
 
 using namespace std;
 
@@ -31,56 +32,50 @@ double **create2DArray(int n) {
     return arr;
 }
 
-void fillMatrix(double **mat, int size) {
-    for (int i = 0; i < size; ++i) {
-        for (int j = 0; j < size; ++j) {
-            mat[i][j] = randomDouble();
-        }
-    }
-}
-
 double randomDouble() {
     double max = 10000, min = -10000;
     double r = (double) rand() / RAND_MAX;
     return min + r * (max - min);
 }
 
-void fill1DArray(double *mat, int n) {
-    for (int i = 0; i < n * n; ++i) {
-        mat[i] = randomDouble();
-    }
-}
-
-void printMatrix(double *mat, int n) {
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            cout << mat[i * n + j] << " ";
-        }
-        cout << endl;
-    }
-}
-
-int sampleSize(int n, bool is1Dop, MATRIX_OP op) {
-    double durations[20];
+int sampleSize(int n, int version, int op) {
+    int iterations = 15;
+    double durations[iterations];
     double avg, std, base;
 
-//    switch (op) {
-//        case Sequential:
-//            for (int i = 0; i < 20; ++i)
-//                durations[i] = getTimeForMultiplication(n);
-//            break;
-//        case Parallel:
-//            for (int i = 0; i < 20; ++i)
-//                durations[i] = getTimeForParallelMultiplication(n);
-//            break;
-//        default:
-//            for (int i = 0; i < 20; ++i)
-//                durations[i] = getTimeForOptimizedMultiplication(n, is1Dop, op);
-//            break;
-//    }
+    switch (version) {
+        case 1:
+            for (int i = 0; i < iterations; ++i)
+                durations[i] = getTimeForMultiplication(n);
+            break;
+        case 2:
+            for (int i = 0; i < iterations; ++i)
+                durations[i] = getTimeForParallelMultiplication(n);
+            break;
+        case 3:
+            switch (op) {
+                case 1:
+                    for (int j = 0; j < iterations; ++j)
+                        durations[j] = getTimeForIKJSeq(n);
+                    break;
+                case 2:
+                    for (int i = 0; i < iterations; ++i)
+                        durations[i] = getTimeForIKJParallel(n);
+                    break;
+                case 3:
+                    for (int i = 0; i < iterations; ++i)
+                        durations[i] = getTimeForBLASL1(n);
+                    break;
+                default:
+                    for (int i = 0; i < iterations; ++i)
+                        durations[i] = getTimeForBLASL3(n);
+                    break;
+            }
+            break;
+    }
 
-    avg = average(durations, 20);
-    std = standardDeviation(durations, 20);
+    avg = average(durations, iterations);
+    std = standardDeviation(durations, iterations);
     base = (100 * 1.96 * std) / (5 * avg);
 
     return (int) ceil(pow(base, 2));

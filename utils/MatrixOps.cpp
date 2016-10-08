@@ -24,8 +24,9 @@ void multiply1D(Matrix1D *A, Matrix1D *B, Matrix1D *C, int n) {
 }
 
 void parallelMultiply(Matrix *A, Matrix *B, Matrix *C, int n) {
-    omp_set_num_threads(4);
-#pragma omp parallel for
+    omp_set_num_threads(2);
+    
+    #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < n; ++j) {
             for (int k = 0; k < n; ++k) {
