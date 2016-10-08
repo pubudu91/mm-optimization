@@ -19,7 +19,7 @@ void multiplyIKJ(Matrix *A, Matrix *B, Matrix *C, int n) {
 }
 
 void multiply1DMatrixIKJ(Matrix1D *A, Matrix1D *B, Matrix1D *C, int n) {
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < n; ++i) 
         for (int k = 0; k < n; ++k)
             for (int j = 0; j < n; ++j)
                 C->matrix[i * n + j] += A->matrix[i * n + k] * B->matrix[k * n + j];
@@ -73,7 +73,7 @@ void blasL1(Matrix1D *A, Matrix1D *B, Matrix1D *C, int n) {
 
     double *Arv, *Crv;
 
-    omp_set_num_threads(4);
+    omp_set_num_threads(2);
     #pragma omp parallel for
     for (int i = 0; i < n; ++i) {
         Arv = Amat + i * n;

@@ -33,15 +33,15 @@ void runVersion1() {
 }
 
 double getTimeForMultiplication(int n) {
-    Matrix *A = new Matrix(n);
-    Matrix *B = new Matrix(n);
-    Matrix *C = new Matrix(n);
+    Matrix1D *A = new Matrix1D(n);
+    Matrix1D *B = new Matrix1D(n);
+    Matrix1D *C = new Matrix1D(n);
 
     A->fillMatrix();
     B->fillMatrix();
 
     auto begin = chrono::high_resolution_clock::now();
-    multiply(A, B, C, n);
+    multiply1D(A, B, C, n);
     auto end = chrono::high_resolution_clock::now();
 
     auto duration = chrono::duration_cast<chrono::nanoseconds>(end - begin).count();

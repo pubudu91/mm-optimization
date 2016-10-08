@@ -14,5 +14,7 @@ void multiply1D(Matrix1D *A, Matrix1D *B, Matrix1D *C, int n);
 
 void parallelMultiply(Matrix *A, Matrix *B, Matrix *C, int n);
 
+void parallelMultiply1D(Matrix1D *A, Matrix1D *B, Matrix1D *C, int n);
+
 #endif //LAB4_5_MATRIXOPS_H
 
