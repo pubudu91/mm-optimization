@@ -1,5 +1,5 @@
-# mm-optimization
-An assignment for Concurrent Programming module to explore various methods of optimizing matrix multiplication
+# Matrix Multiplication Optimization
+This was done as part of a lab assignment for Concurrent Programming module to explore various methods of optimizing matrix multiplication
 
 To compile this project, you need to have CMake 3 or higher installed. To install CMake, follow the following instructions:
 
