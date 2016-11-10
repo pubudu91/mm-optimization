@@ -5,8 +5,6 @@
 #include <iostream>
 #include <cmath>
 #include "MiscOps.h"
-#include "../common/Matrix.h"
-#include "MatrixOps.h"
 #include "../version1/version1.h"
 #include "../version2/version2.h"
 #include "../version3/version3.h"
@@ -23,15 +21,6 @@ double average(double data[], int n) {
     return average;
 }
 
-double **create2DArray(int n) {
-    double **arr = new double *[n];
-
-    for (int i = 0; i < n; ++i)
-        arr[i] = new double[n]();
-
-    return arr;
-}
-
 double randomDouble() {
     double max = 10000, min = -10000;
     double r = (double) rand() / RAND_MAX;
@@ -39,7 +28,7 @@ double randomDouble() {
 }
 
 int sampleSize(int n, int version, int op) {
-    int iterations = 15;
+    int iterations = 10;
     double durations[iterations];
     double avg, std, base;
 
@@ -66,9 +55,13 @@ int sampleSize(int n, int version, int op) {
                     for (int i = 0; i < iterations; ++i)
                         durations[i] = getTimeForBLASL1(n);
                     break;
-                default:
+                case 4:
                     for (int i = 0; i < iterations; ++i)
                         durations[i] = getTimeForBLASL3(n);
+                    break;
+                case 5:
+                    for (int i = 0; i < iterations; ++i)
+                        durations[i] = getTimeForTransposedMultiplication(n);
                     break;
             }
             break;
@@ -92,16 +85,6 @@ double standardDeviation(double data[], int n) {
         sum_deviation += (data[i] - mean) * (data[i] - mean);
 
     return sqrt(sum_deviation / (n - 1));
-}
-
-Matrix *transpose(Matrix *mat, int n) {
-    Matrix *temp = new Matrix(n);
-    for (int i = 0; i < n; ++i) {
-        for (int j = 0; j < n; ++j) {
-            temp->matrix[i][j] = mat->matrix[j][i];
-        }
-    }
-    return temp;
 }
 
 Matrix1D *transpose1D(Matrix1D *mat, int n) {

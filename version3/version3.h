@@ -15,4 +15,6 @@ double getTimeForBLASL1(int n);
 
 double getTimeForBLASL3(int n);
 
+double getTimeForTransposedMultiplication(int n);
+
 #endif //LAB4_5_FINAL_VERSION3_H

@@ -9,21 +9,11 @@
 
 double average(double data[], int n);
 
-double **create2DArray(int n);
-
-//void fillMatrix(double **mat, int size);
-
 double randomDouble();
-
-//void fill1DArray(double *mat, int n);
-
-//void printMatrix(double *mat, int n);
 
 int sampleSize(int n, int version, int op);
 
 double standardDeviation(double data[], int n);
-
-Matrix *transpose(Matrix *mat, int n);
 
 Matrix1D *transpose1D(Matrix1D *mat, int n);
 

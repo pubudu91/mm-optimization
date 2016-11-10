@@ -9,9 +9,9 @@ void printSampleSizes(int version, int op);
 using namespace std;
 
 int main(int argc, char *argv[]) {
-    int version = argc > 1 ? stoi(argv[1]) : 0;
-    int op = argc == 3 ? stoi(argv[2]) : argc == 4 ? stoi(argv[3]) : 0;
-    int subv = argc == 3 ? stoi(argv[2]) : argc == 4 ? stoi(argv[3]) : 0;
+    int version = (argc > 1) ? stoi(argv[1]) : 0;
+    int op = (argc == 3) ? stoi(argv[2]) : argc == 4 ? stoi(argv[3]) : 0;
+    int subv = (argc == 3 || argc == 4) ? stoi(argv[2]) : 0;
 
     switch (version) {
         case 1:
@@ -51,8 +51,11 @@ void printSampleSizes(int version, int op) {
                 case 3:
                     cout << "Calculating sample sizes for BLAS level 1 version" << endl;
                     break;
-                default:
+                case 4:
                     cout << "Calculating sample sizes for BLAS level 3 version" << endl;
+                    break;
+                case 5:
+                    cout << "Calculating sample sizes for transposed B version" << endl;
                     break;
             }
             break;

@@ -10,7 +10,7 @@
 
 using namespace std;
 
-void runVersion1() {
+void runVersion1() { //218
     int iterations[] = {218, 7, 3, 3, 3, 3, 3, 3, 3, 3};
     double *durations, avg;
     int n = 0;

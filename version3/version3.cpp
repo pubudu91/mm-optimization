@@ -5,14 +5,13 @@
 #include <iostream>
 #include <chrono>
 #include "version3.h"
-#include "../common/Matrix.h"
 #include "../utils/OptimizedMatrixOps.h"
 #include "../utils/MiscOps.h"
 
 using namespace std;
 
-void runVersion3(int op) {
-    int iterations[] = {24, 32, 2, 4, 3, 3, 3, 3, 3, 3, 540, 6, 3, 3, 3, 3, 3, 3, 3, 3};
+void runVersion3(int op) {//24
+    int iterations[] = {24, 32, 2, 4, 3, 3, 3, 3, 3, 3, 92, 108, 3, 3, 3, 3, 3, 3, 3, 3};
 
     double *durations, avg;
     int n = 0, x = 15;
@@ -60,6 +59,15 @@ void runVersion3(int op) {
                 avg = average(durations, x);
                 cout << "For BLAS L3 n = " << n << " , average time = " << avg << " ms" << endl;
                 break;
+            case 5:
+                durations = new double[iterations[i]];
+
+                for (int j = 0; j < iterations[i]; ++j)
+                    durations[j] = getTimeForTransposedMultiplication(n);
+
+                avg = average(durations, iterations[i]);
+                cout << "For transposed B n = " << n << " , average time = " << avg << " ms" << endl;
+                break;
         }
 
         delete[] durations;
@@ -67,15 +75,15 @@ void runVersion3(int op) {
 }
 
 double getTimeForIKJSeq(int n) {
-    Matrix *A = new Matrix(n);
-    Matrix *B = new Matrix(n);
-    Matrix *C = new Matrix(n);
+    Matrix1D *A = new Matrix1D(n);
+    Matrix1D *B = new Matrix1D(n);
+    Matrix1D *C = new Matrix1D(n);
 
     A->fillMatrix();
     B->fillMatrix();
 
     auto begin = chrono::high_resolution_clock::now();
-    multiplyIKJ(A, B, C, n);
+    multiply1DMatrixIKJ(A, B, C, n);
     auto end = chrono::high_resolution_clock::now();
 
     auto duration = chrono::duration_cast<chrono::nanoseconds>(end - begin).count();
@@ -86,15 +94,15 @@ double getTimeForIKJSeq(int n) {
 }
 
 double getTimeForIKJParallel(int n) {
-    Matrix *A = new Matrix(n);
-    Matrix *B = new Matrix(n);
-    Matrix *C = new Matrix(n);
+    Matrix1D *A = new Matrix1D(n);
+    Matrix1D *B = new Matrix1D(n);
+    Matrix1D *C = new Matrix1D(n);
 
     A->fillMatrix();
     B->fillMatrix();
 
     auto begin = chrono::high_resolution_clock::now();
-    parallelMultiplyIKJ(A, B, C, n);
+    parallelMultiply1DMatrixIKJ(A, B, C, n);
     auto end = chrono::high_resolution_clock::now();
 
     auto duration = chrono::duration_cast<chrono::nanoseconds>(end - begin).count();
@@ -146,3 +154,21 @@ double getTimeForBLASL3(int n) {
     return duration / 1000000.0;
 }
 
+double getTimeForTransposedMultiplication(int n) {
+    Matrix1D *A = new Matrix1D(n);
+    Matrix1D *B = new Matrix1D(n);
+    Matrix1D *C = new Matrix1D(n);
+
+    A->fillMatrix();
+    B->fillMatrix();
+
+    auto begin = chrono::high_resolution_clock::now();
+    transposedParallelMultiply(A, B, C, n);
+    auto end = chrono::high_resolution_clock::now();
+
+    auto duration = chrono::duration_cast<chrono::nanoseconds>(end - begin).count();
+
+    delete A, B, C;
+
+    return duration / 1000000.0;
+}
